@@ -15,7 +15,7 @@ export const Header = () => {
                                     replace: true,
                                 })
                             }, [navigate])}>
-                            <img src="./img/header-logo.png" alt="Bosa Noga" />
+                            <img src="/html/img/header-logo.png" alt="Bosa Noga" />
                         </a>
                         <div className="collapase navbar-collapse" id="navbarMain">
                             <ul className="navbar-nav mr-auto">
