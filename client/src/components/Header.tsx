@@ -59,7 +59,6 @@ export const Header = () => {
                             <div>
                                 <div className="header-controls-pics">
                                     <div data-id="search-expander" className="header-controls-pic header-controls-search"></div>
-                                    {/*<!-- Do programmatic navigation on click to /cart.html -->*/}
                                     <div className="header-controls-pic header-controls-cart"
                                         onClick={useCallback(() => {
                                             navigate("/cart.html", {

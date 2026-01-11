@@ -5,17 +5,21 @@ import { CatalogPage } from './pages/CatalogPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { AboutPage } from './pages/AboutPage'
 import { ContactsPage } from './pages/ContactsPage'
+import { CartPage } from './pages/CartPage'
+import { HomePage } from './pages/HomePage'
 
 function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<Layout />} />
-      <Route path="/catalog.html" element={<CatalogPage />} />
-      <Route path="/about.html" element={<AboutPage />} />
-      <Route path="/contacts.html" element={<ContactsPage />} />
-      <Route path="/cart.html" element={<>CartPage</>} />
-      <Route path="*" element={<NotFoundPage />} />
+      <Route path="/" element={<Layout />} >
+        <Route index element={<HomePage />} />
+        <Route path="/catalog.html" element={<CatalogPage />} />
+        <Route path="/about.html" element={<AboutPage />} />
+        <Route path="/contacts.html" element={<ContactsPage />} />
+        <Route path="/cart.html" element={<CartPage />} />
+      </Route>
+      <Route path="/404.html" element={<NotFoundPage />} />
     </Routes>
   )
 }

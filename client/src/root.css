@@ -45,7 +45,7 @@ section {
   height: 32px;
   width: 32px;
   margin: 0 10px;
-  background-image: url(../img/header-controls-sprite.png);
+  background-image: url(/html/img/header-controls-sprite.png);
   background-repeat: no-repeat;
   cursor: pointer;
 }
@@ -252,7 +252,7 @@ section {
   border-radius: 8px;
   background-color: #FFFFFF;
   background-repeat: no-repeat;
-  background-image: url(../img/footer-sprite.png);
+  background-image: url(/html/img/footer-sprite.png);
 }
 
 .footer-pay-systems:not(:first-child) {
@@ -294,7 +294,7 @@ section {
   margin: 0 5px;
   border-radius: 50%;
   background-repeat: no-repeat;
-  background-image: url(../img/footer-sprite.png);
+  background-image: url(/html/img/footer-sprite.png);
 }
 
 .footer-social-link-twitter {
