@@ -1,5 +1,6 @@
 import { CatalogItems } from "../components/CatalogItems";
 import { CatalogCategories } from "../components/CatalogCategories";
+import { CatalogSearchForm } from "../components/CatalogSearchForm";
 
 export const CatalogPage = () => {
     return <main className="container">
@@ -7,9 +8,7 @@ export const CatalogPage = () => {
             <div className="row">
                 <section className="catalog">
                     <h2 className="text-center">Каталог</h2>
-                    <form className="catalog-search-form form-inline">
-                        <input className="form-control" placeholder="Поиск" />
-                    </form>
+                    <CatalogSearchForm />
                     <CatalogCategories />
                     <div className="row">
                         <CatalogItems />

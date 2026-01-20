@@ -31,12 +31,13 @@ export const CatalogCategories = () => {
                 return response.json()
             })
             .then(data => {
-                setCategories(([...data, { id: ALL_CATEGORIES_ID, title: 'Все' }]))
+                setCategories(([{ id: ALL_CATEGORIES_ID, title: 'Все' }, ...data]))
             })
             .catch(error => {
                 console.error(error);
             });
-    }, [])
+    }, [categories])
+
 
     useEffect(() => {
         fetchCategories();

@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export type TCatalogItem = {
     id: number,
@@ -14,7 +14,7 @@ const ALL_CATEGORIES_ID = 0;
 export const CatalogItems = () => {
     const [catalogItems, setCatalogItems] = useState<TCatalogItem[]>([]);
 
-    const [currentCategoryId, setCurrentCategoryId] = useState<number>(0);
+    const [currentCategoryId, setCurrentCategoryId] = useState<number>(ALL_CATEGORIES_ID);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [isNextPage, setIsNextPage] = useState(true);
 
@@ -28,21 +28,24 @@ export const CatalogItems = () => {
         });
     }, [setCurrentPage]);
 
-    useEffect(() => {
-        setCatalogItems([]);
-        setCurrentPage(0);
-        setCurrentCategoryId(Number(searchParams.get('cid')));
-    }, [searchParams]);
+    const navigate = useNavigate();
 
-    useEffect(() => {
+    const handleGoToProductPage = useCallback(
+        (productId: number) => {
+            navigate(`/catalog/${productId}.html`,
+                { replace: true });
+        },
+        [navigate]
+    );
+
+    const fetchCatalogItems = useCallback(() => {
         const url = new URL(`http://localhost:7070/api/items`);
-        console.log({ currentCategoryId, currentPage });
 
         if (currentPage > 0) {
-            url.searchParams.append('offset', String(currentPage * 6));
+            url.searchParams.append('offset', String(currentPage * 6));/*.set*/
         }
 
-        if (currentCategoryId !== undefined && currentCategoryId !== ALL_CATEGORIES_ID) {
+        if (currentCategoryId !== ALL_CATEGORIES_ID) {
             url.searchParams.append('categoryId', String(currentCategoryId));
         }
 
@@ -54,30 +57,49 @@ export const CatalogItems = () => {
                 return response.json();
             })
             .then((data: TCatalogItem[]) => {
-                setCatalogItems((state) => ([...state, ...data]));
-                setIsNextPage(data && data.length > 5);
+                setCatalogItems((state) => ([...data.concat(state)]));
+                setIsNextPage(data.length === 6);
             })
             .catch(error => {
                 console.error(error);
             });
-    }, [
-        currentPage,
-        currentCategoryId,
-        setCatalogItems,
-        setIsNextPage,
-    ]);
+    }, [currentPage,
+        currentCategoryId]);
+
+    const memoizedSearchParams = useMemo(() => {
+        return searchParams.get("cid")
+    },
+        [searchParams]
+    )
+
+    useEffect(() => {
+        setCatalogItems([]);
+        setCurrentPage(0);
+        setCurrentCategoryId(Number(memoizedSearchParams) || ALL_CATEGORIES_ID);
+        fetchCatalogItems();
+    },
+        [memoizedSearchParams,
+            fetchCatalogItems]
+    );
 
     return <>
         <div className="container">
             <div className="row">
                 {catalogItems.map((item, i) => (
-                    <div key={`${i}-${item.id}`} className="col-4">
+                    <div key={`${i}-${item.id}`}
+                        className="col-4" >
                         <div className="card catalog-item-card">
                             <img src={item.images[0]} className="card-img-top img-fluid" alt={item.title} />
                             <div className="card-body">
                                 <p className="card-text">{item.title}</p>
                                 <p className="card-text">{item.price} руб.</p>
-                                <a href={`/products/${item.id}.html`} className="btn btn-outline-primary"
+                                <a
+                                    href={`/catalog/${item.id}.html`}
+                                    className="btn btn-outline-primary"
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        handleGoToProductPage(item.id)
+                                    }}
                                 >Заказать</a>
                             </div>
                         </div>
@@ -88,7 +110,9 @@ export const CatalogItems = () => {
                 <button
                     className="btn btn-outline-primary"
                     disabled={!isNextPage}
-                    onClick={getNextPageHandler}
+                    onClick={
+                        getNextPageHandler
+                    }
                 >
                     Загрузить ещё
                 </button>
