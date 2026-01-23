@@ -94,13 +94,15 @@ export const CatalogItems = () => {
                                 <p className="card-text">{item.title}</p>
                                 <p className="card-text">{item.price} руб.</p>
                                 <a
-                                    href={`/catalog/${item.id}.html`}
+                                    href={`/catalog/${item.id}`}
                                     className="btn btn-outline-primary"
                                     onClick={(event) => {
                                         event.preventDefault();
-                                        handleGoToProductPage(item.id)
+                                        handleGoToProductPage(item.id);
                                     }}
-                                >Заказать</a>
+                                >
+                                    Заказать
+                                </a>
                             </div>
                         </div>
                     </div>

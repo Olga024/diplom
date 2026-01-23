@@ -5,11 +5,14 @@ import App from './App.tsx'
 import './index.css'
 import './root.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { AppStateProvider } from './contexts/AppStateContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <AppStateProvider value={undefined}>
+        <App />
+      </AppStateProvider>
     </BrowserRouter>
   </StrictMode>,
 )

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 type TProduct = {
     id: number;
@@ -19,12 +20,8 @@ type TProduct = {
     }[];
 };
 
-type TProductPageProps = {
-    id: number;
-}
-
-export const ProductPage: React.FC<TProductPageProps> = ({ id }) => {
-
+export const ProductPage: React.FC = () => {
+    const { id } = useParams();
     const [product, setProduct] = useState<TProduct | null>(null);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [quantity, setQuantity] = useState(1);

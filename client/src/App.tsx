@@ -19,7 +19,7 @@ function App() {
         <Route path="/about.html" element={<AboutPage />} />
         <Route path="/contacts.html" element={<ContactsPage />} />
         <Route path="/cart.html" element={<CartPage />} />
-        <Route path="/catalog/:id.html" element={<ProductPage id={36} />} />
+        <Route path="/catalog/:id" element={<ProductPage/>} />
       </Route>
       <Route path="/404.html" element={<NotFoundPage />} />
     </Routes>

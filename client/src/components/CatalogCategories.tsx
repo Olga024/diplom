@@ -36,7 +36,7 @@ export const CatalogCategories = () => {
             .catch(error => {
                 console.error(error);
             });
-    }, [categories])
+    }, [])
 
 
     useEffect(() => {
