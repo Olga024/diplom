@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, type ProviderProps } from "react";
 
-type TItemInCart = {
+export type TItemInCart = {
   id: number;
   title: string;
   size: string;
@@ -9,27 +9,46 @@ type TItemInCart = {
 }
 
 type TAppStateContext = {
-  itemInCart: TItemInCart | null;
-  setItemInCart: (itemInCart: TItemInCart | null) => void;
-}
+  itemsInCart: TItemInCart[];
+  addItemToCart: (item: TItemInCart) => void;
+  removeItemFromCart: (itemID: number) => void;
+  clearCart: () => void;
+};
 
-// @ts-expect-error
-const Context = createContext<TAppStateContext>(null);
+const CartContext = createContext<TAppStateContext | undefined>(undefined)
 
-export const AppStateProvider = ({ children }: ProviderProps<any>) => {
+type TAppStateContextParams = {};
 
-  const [itemInCart, setItemInCart] = useState<TAppStateContext['itemInCart']>(null);
+export const AppStateProvider = ({ children }: ProviderProps<TAppStateContextParams>) => {
 
-  return <Context.Provider value={{
-    itemInCart,
-    setItemInCart,
+  const [itemsInCart, setItemsInCart] = useState<TItemInCart[]>([]);
+
+  const addItemToCart = (newItem: TItemInCart) => {
+    setItemsInCart((prevItems) => [...prevItems, newItem]);
+  };
+
+  const removeItemFromCart = (itemID: number) => {
+    setItemsInCart((prevItems) =>
+      prevItems.filter((item) => item.id !== itemID)
+    );
+  };
+
+  const clearCart = () => {
+    setItemsInCart([]);
+  };
+
+  return <CartContext.Provider value={{
+    itemsInCart,
+    addItemToCart,
+    removeItemFromCart,
+    clearCart
   }}>
     {children}
-  </Context.Provider>
+  </CartContext.Provider>
 }
 
 export const useAppStateContext = () => {
-  const context = useContext(Context)
+  const context = useContext(CartContext)
   if (!context) {
     throw new Error(
       "useAppState must be used within a AppStateProvider"

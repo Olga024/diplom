@@ -10,7 +10,7 @@ import { AppStateProvider } from './contexts/AppStateContext.tsx';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <AppStateProvider value={undefined}>
+      <AppStateProvider value={{}} >
         <App />
       </AppStateProvider>
     </BrowserRouter>

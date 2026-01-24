@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useAppStateContext, type TItemInCart } from "../contexts/AppStateContext";
 
 type TProduct = {
     id: number;
@@ -26,6 +27,8 @@ export const ProductPage: React.FC = () => {
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [quantity, setQuantity] = useState(1);
 
+    const { addItemToCart } = useAppStateContext();
+
     useEffect(() => {
         fetch(`http://localhost:7070/api/items/${id}`)
             .then(response => response.json())
@@ -43,9 +46,24 @@ export const ProductPage: React.FC = () => {
 
 
     const handleAddToCart = useCallback(() => {
-        window.location.href = '/cart.html'
+
+        if (product && selectedSize && quantity) {
+            const cartItem: TItemInCart = {
+                id: product.id,
+                title: product.title,
+                size: selectedSize,
+                quantity,
+                totalPrice: product.price * quantity,
+            };
+            addItemToCart(cartItem);
+            alert("Товар успешно добавлен в корзину!");
+        };
     },
-        [])
+        [product,
+            selectedSize,
+            quantity,
+            addItemToCart
+        ])
 
     if (!product) {
         return <div>Лоадер сюда...</div>;
@@ -53,7 +71,8 @@ export const ProductPage: React.FC = () => {
 
     const allSizes = product.sizes
 
-    const isSelectedSizeAvailable = selectedSize && allSizes.find(size => size.size === selectedSize && size.available);
+    const isSelectedSizeAvailable =
+        selectedSize && allSizes.find(size => size.size === selectedSize && size.available);
 
     return (
         <section className="catalog-item">
