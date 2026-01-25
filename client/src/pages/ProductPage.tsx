@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppStateContext, type TItemInCart } from "../contexts/AppStateContext";
 
 type TProduct = {
@@ -23,6 +23,7 @@ type TProduct = {
 
 export const ProductPage: React.FC = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [product, setProduct] = useState<TProduct | null>(null);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [quantity, setQuantity] = useState(1);
@@ -54,15 +55,17 @@ export const ProductPage: React.FC = () => {
                 size: selectedSize,
                 quantity,
                 totalPrice: product.price * quantity,
+                price: product.price,
             };
             addItemToCart(cartItem);
-            alert("Товар успешно добавлен в корзину!");
+            navigate("/cart.html");
         };
     },
         [product,
             selectedSize,
             quantity,
-            addItemToCart
+            addItemToCart,
+            navigate
         ])
 
     if (!product) {

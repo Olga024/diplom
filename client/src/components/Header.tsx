@@ -1,5 +1,7 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { CartWidget } from "./CartWidget";
+import { SearchWidget } from "./SearchWidget";
 
 export const Header = () => {
     const navigate = useNavigate();
@@ -59,20 +61,9 @@ export const Header = () => {
                             <div>
                                 <div className="header-controls-pics">
                                     <div data-id="search-expander" className="header-controls-pic header-controls-search"></div>
-                                    <div className="header-controls-pic header-controls-cart"
-                                        onClick={useCallback(() => {
-                                            navigate("/cart.html", {
-                                                replace: false,
-                                            });
-                                        }, [navigate])}
-                                    >
-                                        <div className="header-controls-cart-full">1</div>
-                                        <div className="header-controls-cart-menu"></div>
-                                    </div>
+                                    <CartWidget />
                                 </div>
-                                <form data-id="search-form" className="header-controls-search-form form-inline invisible">
-                                    <input className="form-control" placeholder="Поиск" />
-                                </form>
+                                <SearchWidget />
                             </div>
                         </div>
                     </nav>
